@@ -105,6 +105,18 @@ func TestTag(t *testing.T) {
 			cfg:  Config{QueueStub: true},
 			want: "<script>" + QueueStubScript + "</script>",
 		},
+		{
+			name: "forced off with props and the queue stub prints only the stub",
+			cfg:  Config{SiteID: "pa_TEST123456", Enabled: Bool(false), QueueStub: true},
+			opts: Options{Nonce: "n1", Props: map[string]any{"plan": "pro"}},
+			want: `<script nonce="n1">` + QueueStubScript + "</script>",
+		},
+		{
+			name: "forced off with props and no queue stub prints nothing",
+			cfg:  Config{SiteID: "pa_TEST123456", Enabled: Bool(false)},
+			opts: Options{Props: map[string]any{"plan": "pro"}, QueueStub: Bool(false)},
+			want: "",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

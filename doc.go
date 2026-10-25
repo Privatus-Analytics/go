@@ -17,6 +17,8 @@
 // Config.Enabled to force it on or off. When Enabled is nil, the tag is on
 // only in production: the first non-empty one of the PRIVATUS_ENV, APP_ENV and
 // GO_ENV environment variables must equal "production" (any letter case).
+// When the tag is off and QueueStub is on, only the queue stub prints, so
+// privatus.track calls in your own JavaScript never fail.
 //
 // Full docs: https://privatusanalytics.com/docs
 package privatus

@@ -75,7 +75,8 @@ In production it prints:
 ```
 
 The tag prints nothing when there is no site id, and nothing outside
-production (see below).
+production (see below). The one exception is the queue stub: when you turn it
+on, it still prints, alone.
 
 You can also call it from Go code. It returns `template.HTML`:
 

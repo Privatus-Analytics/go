@@ -110,9 +110,15 @@ func main() {
 		render(w, templates["nasty"], data{Title: "Nasty", Nasty: nasty, Options: privatus.Options{
 			Request: r, Props: props, QueueStub: privatus.Bool(true)}})
 	})
+	// Off with the queue stub on prints only the stub, so privatus.track
+	// calls still work. Off without it prints nothing.
 	mux.HandleFunc("GET /off", func(w http.ResponseWriter, r *http.Request) {
 		render(w, off, data{Options: privatus.Options{
-			Request: r, Props: pageProps(), Enabled: privatus.Bool(false)}})
+			Request: r, Props: pageProps(), Enabled: privatus.Bool(false), QueueStub: privatus.Bool(true)}})
+	})
+	mux.HandleFunc("GET /off-plain", func(w http.ResponseWriter, r *http.Request) {
+		render(w, off, data{Options: privatus.Options{
+			Request: r, Props: pageProps(), Enabled: privatus.Bool(false), QueueStub: privatus.Bool(false)}})
 	})
 	// Auto inject on this route only, so the other routes test the template
 	// function alone.
