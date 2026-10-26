@@ -2,19 +2,46 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/Privatus-Analytics/go.svg)](https://pkg.go.dev/github.com/Privatus-Analytics/go)
 
-Adds the cookieless [Privatus Analytics](https://privatusanalytics.com)
-tracking script to your Go web app with `html/template` functions, or with an
-optional `net/http` middleware that puts it in the `<head>` for you.
+**Simple, private website analytics for your Go web app. No cookies, honest numbers,
+and a dashboard you understand in seconds.**
 
-Privatus Analytics counts visits, sources, pages and conversions without
-cookies, local storage or fingerprinting, so analytics does not need a consent
-banner by itself. Check with your own counsel for your country.
+## Why Privatus Analytics
 
-The package only prints HTML for the browser. It never sends events or any
-other request from your server, sets no cookies, and never reads IP addresses,
-browser details (user agents) or any visitor id. It uses only the Go standard
-library. You need a Privatus Analytics account to see reports, and there is a
-free plan. Sign up at https://privatusanalytics.com.
+**Google Analytics is slow, confusing and hungry for data.** It sends what your
+visitors do to Google. In many countries it means showing a cookie pop-up (the box
+that asks visitors to accept cookies), and many people click "reject", so you never
+see them. Bots pad the numbers that are left.
+
+**Privatus Analytics fixes that.** It counts visits to your Go web app without cookies and
+never stores IP addresses. Bots are filtered out before they are counted. Your
+data is never sold or shared.
+
+What you get:
+
+- **A dashboard you understand in seconds.** Visitors, top pages and where people
+  came from, all on one screen.
+- **No cookie pop-up needed for our analytics.** We set no cookies and store no
+  personal data. Laws differ by country, so check your own legal advice.
+- **Honest numbers.** Known bots and fake traffic are left out on every plan.
+- **A fast site.** The tracking script is about 3 KB, tiny next to most tracking tags.
+- **Data you own.** We never sell it or show you ads, and you can pull it out
+  any time through the API.
+
+**Start free.** The Free plan has 10,000 events a month and 3 sites, with no card.
+Every new account also gets 14 days of Pro free, with no card.
+[Create your account](https://privatusanalytics.com).
+
+## What this package does
+
+- `html/template` functions, or an optional `net/http` middleware that puts the
+  script in the `<head>` for you.
+- The package only prints HTML for the browser. It never sends events or any
+  other request from your server, sets no cookies, and never reads IP
+  addresses, browser details (user agents) or any visitor id.
+- It uses only the Go standard library.
+
+You need a Privatus Analytics account to see your reports, and there is a
+free plan. [Sign up at privatusanalytics.com](https://privatusanalytics.com).
 
 ## Requirements
 
@@ -87,7 +114,7 @@ html = privatus.Tag(privatus.Options{}) // uses only the environment variables
 
 ### Content Security Policy nonce
 
-A Content Security Policy (CSP) can block scripts that do not carry the right
+A Content Security Policy (CSP) can block scripts that do not have the right
 one-time code, called a nonce. Store the nonce in the request context with
 `WithNonce`, and every script this package prints gets it:
 
@@ -123,7 +150,7 @@ http.ListenAndServe(":8080", privatus.Middleware(analytics)(mux))
 It adds the tag just before `</head>` in uncompressed `text/html` responses with
 status 200, and fixes the `Content-Length` header. It skips `HEAD` requests,
 Ajax requests (the `X-Requested-With: XMLHttpRequest` header), pages without a
-`<head>`, and pages that already have the tag. Responses that carry a
+`<head>`, and pages that already have the tag. Responses that have a
 `Content-Encoding` header are left alone, so put the middleware inside (after)
 any compression middleware, or use the template function instead.
 
@@ -303,7 +330,7 @@ numbers and booleans, and lists stay lists (up to 30 items). The script is
 safe to print in the page: characters that could end it early are escaped.
 
 **Never put names, email addresses, user ids or anything else that points to
-one person in page properties.** Privatus counts visitors without any id, so
+one person in page properties.** Privatus Analytics counts visitors without any id, so
 put groups (like plan or role), not people. The server also removes email
 addresses and long ids it finds.
 
